@@ -1,0 +1,40 @@
+.home-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 50px;
+  }
+  
+  .home-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .home-input {
+    padding: 10px;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .home-button {
+    margin-top: 10px;
+  }
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .form-image {
+    width: 100%;
+    height: auto;
+    border-radius: 20px;  /* Curved border */
+    margin-bottom: 20px;   /* Space between the image and form fields */
+    max-width: 500px;      /* Adjust the size as per your requirement */
+  }
+  

@@ -1,0 +1,87 @@
+/* Common form styles */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+  }
+  
+  .form-container h1 {
+    font-size: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .form-field {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  
+  textarea {
+    height: 80px;
+    resize: none;
+  }
+  
+  /* Button styles */
+  .form-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 10px;
+  }
+  
+  /* Update button (default style) */
+  .update-button {
+    background-color: #007bff;
+    color: #fff;
+  }
+  
+  .update-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Cancel button */
+  .cancel-button {
+    background-color: #ff4d4f;
+    color: #fff;
+  }
+  
+  .cancel-button:hover {
+    background-color: #e63946;
+  }
+  
+  /* Mobile adjustments */
+  @media (max-width: 480px) {
+    .form-container {
+      padding: 15px;
+    }
+  
+    .form-field {
+      margin-bottom: 12px;
+    }
+  
+    .form-button {
+      padding: 12px;
+      font-size: 18px;
+    }
+  }
+  
