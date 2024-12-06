@@ -33,7 +33,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();  // Prevent form submission from refreshing the page
     try {
-      await axios.post("http://localhost:3000/submit-booking", formData);
+      await axios.post("https://spa-booking-backend.onrender.com/submit-booking", formData);
       alert("Appointment booked successfully!");
       navigate("/");  // Navigate to the Home page after successful booking
     } catch (error) {
