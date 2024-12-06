@@ -30,7 +30,7 @@ function Modify() {
             // Fetch appointment data based on the phone number (if applicable)
             const fetchAppointmentData = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:3000/appointment/${data}`);
+                    const response = await axios.get(`https://spa-booking-backend.onrender.com/appointment/${data}`);
                     setFormData((prevData) => ({
                         ...prevData,
                         name: response.data.name,
@@ -66,7 +66,7 @@ function Modify() {
         }
 
         try {
-            const response = await axios.post("http://localhost:3000/modify-appointment", {
+            const response = await axios.post("https://spa-booking-backend.onrender.com/modify-appointment", {
                 phone: formData.phone,  // Ensure the phone is included
                 name: formData.name,
                 service: formData.service,
@@ -88,7 +88,7 @@ function Modify() {
         e.preventDefault();
 
         try {
-            await axios.post('http://localhost:3000/cancel-appointment', { phone: formData.phone });
+            await axios.post('https://spa-booking-backend.onrender.com/cancel-appointment', { phone: formData.phone });
             alert('Appointment canceled successfully!');
             navigate('/');  // Navigate back to the list of appointments
         } catch (error) {
