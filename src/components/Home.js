@@ -14,7 +14,7 @@ const Home = () => {
     }
 
     try {
-      const response = await axios.get(`http://localhost:3000/check-phone/${phone}`);
+      const response = await axios.get(`https://spa-booking-backend.onrender.com/check-phone/${phone}`);
       if (response.data.exists) {
         // Phone number exists, navigate to Modify page and pass the phone number
         navigate("/modify", { state: { phone } });
