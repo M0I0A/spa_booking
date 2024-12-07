@@ -56,7 +56,7 @@ const Register = () => {
     try {
       console.log("Form submission data:", formData);
       await axios.post(
-        "http://localhost:3000/submit-booking",
+        "https://spa-booking-backend.onrender.com/submit-booking",
         formData
       );
 
