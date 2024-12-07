@@ -17,7 +17,6 @@ const Register = () => {
   });
 
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     if (location.state?.phone) {
@@ -54,23 +53,11 @@ const Register = () => {
     }
 
     try {
-      console.log("Form submission data:", formData);
-      await axios.post(
-        "https://spa-booking-backend.onrender.com/submit-booking",
-        formData
-      );
-
-      setSuccessMessage("Your appointment has been successfully registered!");
-      setErrors({});
-
-      // Wait 3 seconds then redirect to home page
-      setTimeout(() => {
-        navigate("/");
-      }, 3000);
+      await axios.post("https://spa-booking-backend.onrender.com/submit-booking", formData);
+      navigate("/confirmation"); // Redirect to the confirmation page
     } catch (error) {
       console.error("Error during submission:", error);
       setErrors({ submit: "Failed to register the appointment." });
-      setSuccessMessage("");
     }
   };
 
@@ -147,10 +134,6 @@ const Register = () => {
           Register
         </button>
       </form>
-
-      {successMessage && (
-        <div className="success-message">{successMessage}</div>
-      )}
 
       {errors.submit && (
         <div className="error-message">{errors.submit}</div>

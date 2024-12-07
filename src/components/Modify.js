@@ -16,45 +16,65 @@ function Modify() {
     notes: '',
   });
 
-  const [message, setMessage] = useState(""); // State for success/error messages
-  const [error, setError] = useState("");
+  const [message, setMessage] = useState(""); // State for success messages
+  const [errors, setErrors] = useState({}); // State for field-specific errors
 
   useEffect(() => {
-    const data = location.state?.phone;
-    if (data) {
+    const phone = location.state?.phone;
+
+    if (phone) {
       setFormData((prevData) => ({
         ...prevData,
-        phone: data,  // Populate the phone number
-    }));
+        phone: phone,
+      }));
+
       const fetchAppointmentData = async () => {
         try {
-          const response = await axios.get(`https://spa-booking-backend.onrender.com/appointment/${data}`);
-          setFormData({
-            name: response.data.name || "",
-            service: response.data.service || "",
-            time: response.data.time || "",
-            date: response.data.date || "",
-            notes: response.data.notes || "",
-            phone: data,
-          });
+          const response = await axios.get(`https://spa-booking-backend.onrender.com/appointment/${phone}`);
+
+          if (response.status === 200) {
+            setFormData((prevData) => ({
+              ...prevData,
+              name: response.data.name || "",
+              service: response.data.service || "",
+              time: response.data.time || "",
+              date: response.data.date || "",
+              notes: response.data.notes || "",
+            }));
+          } else {
+            console.error("Unexpected response status:", response.status);
+          }
         } catch (error) {
-          console.error("Error fetching appointment data:", error);
+          console.error("Error fetching appointment data:", error.response?.data || error.message);
         }
       };
+
       fetchAppointmentData();
     }
   }, [location.state?.phone]);
 
+
+  const validateFields = () => {
+    const newErrors = {};
+    if (!formData.name) newErrors.name = "Name is required.";
+    if (!formData.service) newErrors.service = "Service is required.";
+    if (!formData.time) newErrors.time = "Time is required.";
+    if (!formData.date) newErrors.date = "Date is required.";
+    if (!formData.notes) newErrors.notes = "Notes are required.";
+    return newErrors;
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    setError("");
+    setErrors({ ...errors, [name]: "" }); // Clear error for the current field
   };
 
   const handleUpdate = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.service || !formData.time || !formData.date || !formData.notes) {
-      setError("All fields are required!");
+    const validationErrors = validateFields();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
       return;
     }
 
@@ -109,8 +129,6 @@ function Modify() {
       />
       <h1>Modify Your Appointment</h1>
 
-      {error && <p className="error-text">{error}</p>}
-
       <form onSubmit={handleUpdate}>
         <input
           className="form-field"
@@ -120,6 +138,7 @@ function Modify() {
           value={formData.name}
           onChange={handleChange}
         />
+        {errors.name && <span className="error-text">{errors.name}</span>}
 
         <input
           className="form-field"
@@ -141,6 +160,7 @@ function Modify() {
           <option value="Facial">Facial</option>
           <option value="Manicure">Manicure</option>
         </select>
+        {errors.service && <span className="error-text">{errors.service}</span>}
 
         <input
           className="form-field"
@@ -149,6 +169,7 @@ function Modify() {
           value={formData.time}
           onChange={handleChange}
         />
+        {errors.time && <span className="error-text">{errors.time}</span>}
 
         <input
           className="form-field"
@@ -157,6 +178,7 @@ function Modify() {
           value={formData.date}
           onChange={handleChange}
         />
+        {errors.date && <span className="error-text">{errors.date}</span>}
 
         <textarea
           className="form-field"
@@ -165,6 +187,7 @@ function Modify() {
           value={formData.notes}
           onChange={handleChange}
         />
+        {errors.notes && <span className="error-text">{errors.notes}</span>}
 
         <button className="form-button update-button" type="submit">
           Update
