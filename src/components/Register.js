@@ -45,11 +45,28 @@ const Register = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();  // Prevent form submission from refreshing the page
+    e.preventDefault();
+
+    const validationErrors = validateFields();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+
     try {
-      await axios.post("http://localhost:3000/submit-booking", formData);
-      alert("Appointment booked successfully!");
-      navigate("/");  // Navigate to the Home page after successful booking
+      console.log("Form submission data:", formData);
+      await axios.post(
+        "http://localhost:3000/submit-booking",
+        formData
+      );
+
+      setSuccessMessage("Your appointment has been successfully registered!");
+      setErrors({});
+
+      // Wait 3 seconds then redirect to home page
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
     } catch (error) {
       console.error("Error during submission:", error);
       setErrors({ submit: "Failed to register the appointment." });

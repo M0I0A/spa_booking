@@ -19,34 +19,28 @@ function Modify() {
   const [message, setMessage] = useState(""); // State for success/error messages
   const [error, setError] = useState("");
 
-    useEffect(() => {
-        const data = location.state?.phone; // Fetch the phone number passed from Home page
-        if (data) {
-            setFormData((prevData) => ({
-                ...prevData,
-                phone: data,  // Populate the phone number
-            }));
-
-            // Fetch appointment data based on the phone number (if applicable)
-            const fetchAppointmentData = async () => {
-                try {
-                    const response = await axios.get(`http://localhost:3000/appointment/${data}`);
-                    setFormData((prevData) => ({
-                        ...prevData,
-                        name: response.data.name,
-                        service: response.data.service,
-                        time: response.data.time,
-                        date: response.data.date,
-                        notes: response.data.notes,
-                    }));
-                } catch (error) {
-                    console.error("Error fetching appointment data:", error);
-                    alert("Failed to load appointment data.");
-                }
-            };
-            fetchAppointmentData();
+  useEffect(() => {
+    const data = location.state?.phone;
+    if (data) {
+      const fetchAppointmentData = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3000/appointment/${data}`);
+          setFormData({
+            name: response.data.name || "",
+            service: response.data.service || "",
+            time: response.data.time || "",
+            date: response.data.date || "",
+            notes: response.data.notes || "",
+            phone: data,
+          });
+        } catch (error) {
+          console.error("Error fetching appointment data:", error);
+          setMessage("Failed to fetch appointment data.");
         }
-    }, [location]);
+      };
+      fetchAppointmentData();
+    }
+  }, [location.state?.phone]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,15 +55,15 @@ function Modify() {
       return;
     }
 
-        try {
-            const response = await axios.post("http://localhost:3000/modify-appointment", {
-                phone: formData.phone,  // Ensure the phone is included
-                name: formData.name,
-                service: formData.service,
-                time: formData.time,
-                date: formData.date,
-                notes: formData.notes,
-            });
+    try {
+      await axios.post("http://localhost:3000/modify-appointment", {
+        phone: formData.phone,
+        name: formData.name,
+        service: formData.service,
+        time: formData.time,
+        date: formData.date,
+        notes: formData.notes,
+      });
 
       setMessage("Appointment updated successfully!");
       setTimeout(() => {
@@ -87,15 +81,21 @@ function Modify() {
   const handleCancel = async (e) => {
     e.preventDefault();
 
-        try {
-            await axios.post('http://localhost:3000/cancel-appointment', { phone: formData.phone });
-            alert('Appointment canceled successfully!');
-            navigate('/');  // Navigate back to the list of appointments
-        } catch (error) {
-            alert('Failed to cancel appointment!');
-            console.error(error);
-        }
-    };
+    try {
+      await axios.post("http://localhost:3000/cancel-appointment", { phone: formData.phone });
+
+      setMessage("Appointment canceled successfully!");
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    } catch (error) {
+      console.error("Error canceling appointment:", error);
+      setMessage("Failed to cancel the appointment.");
+      setTimeout(() => {
+        navigate("/");
+      }, 3000);
+    }
+  };
 
   return (
     <div className="form-container">
