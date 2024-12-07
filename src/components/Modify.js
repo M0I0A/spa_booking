@@ -39,7 +39,6 @@ function Modify() {
           });
         } catch (error) {
           console.error("Error fetching appointment data:", error);
-          setMessage("Failed to fetch appointment data.");
         }
       };
       fetchAppointmentData();
