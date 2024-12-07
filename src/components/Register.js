@@ -1,55 +1,71 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
-import '../styles/global.css';
+import "../styles/global.css";
 
 const Register = () => {
-  const location = useLocation();  // Access the location object
-  const navigate = useNavigate();  // Hook for navigation
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     name: "",
-    phone: "",  // Default phone will be updated from location
+    phone: "",
     service: "",
     time: "",
     date: "",
     notes: "",
   });
 
-  // Set phone from location if it's passed
+  const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
+
   useEffect(() => {
     if (location.state?.phone) {
-      setFormData(prevState => ({
+      setFormData((prevState) => ({
         ...prevState,
-        phone: location.state.phone,  // Set phone from the Home page
+        phone: location.state.phone,
       }));
     }
   }, [location]);
 
+  const validateFields = () => {
+    const newErrors = {};
+    if (!formData.name) newErrors.name = "Name is required.";
+    if (!formData.phone) newErrors.phone = "Phone number is required.";
+    if (!formData.service) newErrors.service = "Please select a service.";
+    if (!formData.time) newErrors.time = "Time is required.";
+    if (!formData.date) newErrors.date = "Date is required.";
+    return newErrors;
+  };
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    setErrors({ ...errors, [name]: "" });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();  // Prevent form submission from refreshing the page
     try {
-      await axios.post("https://spa-booking-backend.onrender.com/submit-booking", formData);
+      await axios.post("http://localhost:3000/submit-booking", formData);
       alert("Appointment booked successfully!");
       navigate("/");  // Navigate to the Home page after successful booking
     } catch (error) {
-      console.error("Error booking appointment:", error);
-      alert("Failed to book the appointment.");
+      console.error("Error during submission:", error);
+      setErrors({ submit: "Failed to register the appointment." });
+      setSuccessMessage("");
     }
   };
 
   return (
     <div className="form-container">
       <img
-        src="https://www.dermaessentia.com/cdn/shop/articles/Hair-Spa-for-Men.jpg?v=1694420768"  // Replace with your image URL
+        src="https://www.dermaessentia.com/cdn/shop/articles/Hair-Spa-for-Men.jpg?v=1694420768"
         alt="Spa"
-        className="form-image"  // Add class for styling
+        className="form-image"
       />
       <h1>Register for a Spa Appointment</h1>
+
       <form onSubmit={handleSubmit}>
         <input
           className="form-field"
@@ -59,14 +75,18 @@ const Register = () => {
           value={formData.name}
           onChange={handleChange}
         />
+        {errors.name && <span className="error-text">{errors.name}</span>}
+
         <input
           className="form-field"
           type="text"
           name="phone"
           placeholder="Your Phone"
           value={formData.phone}
-          onChange={handleChange}
+          readOnly
         />
+        {errors.phone && <span className="error-text">{errors.phone}</span>}
+
         <select
           className="form-field"
           name="service"
@@ -78,6 +98,8 @@ const Register = () => {
           <option value="Facial">Facial</option>
           <option value="Manicure">Manicure</option>
         </select>
+        {errors.service && <span className="error-text">{errors.service}</span>}
+
         <input
           className="form-field"
           type="time"
@@ -85,6 +107,8 @@ const Register = () => {
           value={formData.time}
           onChange={handleChange}
         />
+        {errors.time && <span className="error-text">{errors.time}</span>}
+
         <input
           className="form-field"
           type="date"
@@ -92,6 +116,8 @@ const Register = () => {
           value={formData.date}
           onChange={handleChange}
         />
+        {errors.date && <span className="error-text">{errors.date}</span>}
+
         <textarea
           className="form-field"
           name="notes"
@@ -99,10 +125,19 @@ const Register = () => {
           value={formData.notes}
           onChange={handleChange}
         />
+
         <button className="form-button" type="submit">
           Register
         </button>
       </form>
+
+      {successMessage && (
+        <div className="success-message">{successMessage}</div>
+      )}
+
+      {errors.submit && (
+        <div className="error-message">{errors.submit}</div>
+      )}
     </div>
   );
 };
