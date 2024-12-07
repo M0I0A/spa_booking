@@ -22,6 +22,10 @@ function Modify() {
   useEffect(() => {
     const data = location.state?.phone;
     if (data) {
+      setFormData((prevData) => ({
+        ...prevData,
+        phone: data,  // Populate the phone number
+    }));
       const fetchAppointmentData = async () => {
         try {
           const response = await axios.get(`https://spa-booking-backend.onrender.com/appointment/${data}`);
