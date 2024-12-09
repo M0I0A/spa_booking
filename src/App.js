@@ -4,6 +4,7 @@ import Home from './components/Home';
 import Register from './components/Register';
 import Modify from './components/Modify';
 import ConfirmationPage from './components/ConfirmationPage';
+import ViewAppointment from './components/ViewAppointment';
 import './App.css';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/modify" element={<Modify />} />
           <Route path="/confirmation" element={<ConfirmationPage />} />
+          <Route path="/view-appointment" element={<ViewAppointment />} />
         </Routes>
       </Router>
     </div>
