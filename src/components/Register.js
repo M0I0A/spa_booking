@@ -45,7 +45,6 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const validationErrors = validateFields();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
@@ -53,12 +52,23 @@ const Register = () => {
     }
 
     try {
-      await axios.post("https://spa-booking-backend.onrender.com/submit-booking", formData);
-      navigate("/confirmation"); // Redirect to the confirmation page
+      await axios.post("http://localhost:3000/submit-booking", formData);
+
+      navigate("/confirmation", {
+        state: {
+          message: "Your Appointment is Confirmed!",
+          note: "Thank you for booking your appointment with us. We look forward to serving you!",
+        },
+      });
     } catch (error) {
       console.error("Error during submission:", error);
       setErrors({ submit: "Failed to register the appointment." });
     }
+  };
+
+  const getTodayDate = () => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
   };
 
   return (
@@ -119,6 +129,7 @@ const Register = () => {
           name="date"
           value={formData.date}
           onChange={handleChange}
+          min={getTodayDate()}
         />
         {errors.date && <span className="error-text">{errors.date}</span>}
 

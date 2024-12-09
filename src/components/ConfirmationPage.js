@@ -1,7 +1,20 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/global.css";
 
 const ConfirmationPage = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const { message, note } = location.state || {
+    message: "Operation successful!",
+    note: "You can perform more actions here.",
+  };
+
+  const handleGoBack = () => {
+    navigate("/");
+  };
+
   return (
     <div className="form-container">
       <img
@@ -9,15 +22,9 @@ const ConfirmationPage = () => {
         alt="Spa"
         className="form-image"
       />
-      <h1>Your Appointment is Confirmed!</h1>
-      <p className="confirmation-text">
-        Thank you for booking your appointment with us. We look forward to
-        serving you!
-      </p>
-      <button
-        className="form-button"
-        onClick={() => window.location.assign("/")}
-      >
+      <h1>{message}</h1>
+      <p className="confirmation-text">{note}</p>
+      <button className="form-button" onClick={handleGoBack}>
         Go to Home
       </button>
     </div>
