@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/global.css";
-import { QRCodeCanvas } from "qrcode.react";
 
 const ConfirmationPage = () => {
   const location = useLocation();
@@ -49,6 +48,7 @@ const ConfirmationPage = () => {
         className="form-image"
       />
       <h1>{message}</h1>
+      
 
       {appointmentDetails ? (
         <div className="appointment-details">
@@ -71,23 +71,11 @@ const ConfirmationPage = () => {
           Go to Home
         </button>
 
-        {appointmentDetails && (
-          <button className="form-button" onClick={handlePrint}>
-            Print Confirmation
-          </button>
-        )}
+        {appointmentDetails ?(<button className="form-button" onClick={handlePrint}>
+          Print Confirmation
+        </button>):("")}
+        
       </div>
-
-      {appointmentDetails && (
-        <div className="qr-container">
-          <h2>Scan to View Details</h2>
-          <QRCodeCanvas
-            value={`https://spa-booking-backend.onrender.com/confirmation?phone=${phone}`}
-            size={128} // Size of the QR code
-          />
-        </div>
-      )}
-
       <p className="confirmation-text">{note}</p>
     </div>
   );
