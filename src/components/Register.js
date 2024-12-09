@@ -52,10 +52,11 @@ const Register = () => {
     }
 
     try {
-      await axios.post("http://localhost:3000/submit-booking", formData);
+      await axios.post("https://spa-booking-backend.onrender.com/submit-booking", formData);
 
       navigate("/confirmation", {
         state: {
+          phone:formData.phone,
           message: "Your Appointment is Confirmed!",
           note: "Thank you for booking your appointment with us. We look forward to serving you!",
         },

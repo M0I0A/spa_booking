@@ -137,3 +137,32 @@ input, textarea, select {
   margin: 10px 0;
 }
 
+.appointment-details {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.appointment-details h2 {
+  margin-bottom: 10px;
+}
+
+.button-container {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.qr-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.qr-container h2 {
+  margin-bottom: 10px;
+}
+
+.qr-container canvas {
+  margin: 0 auto;
+}
